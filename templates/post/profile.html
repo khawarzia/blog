@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block title %}
+Profile
+{% endblock %}
+{% block content %}
+
+<div class="modal fade" id="pic-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Upload profile pic</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+            {{form.as_p}}
+            <button class="btn btn-danger" type="submit">
+                Save
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3" style="margin-top: 2%;">
+            <div class="card">
+                <div class="card-header">
+                    <img src="{{profilephoto}}" class="rounded-circle" style="height: auto;width: 100%;">
+                    <span class="fas fa-edit" onclick="$('#pic-modal').modal('show');">  Edit your profile picture</span>
+                </div>
+                <div class="card-body">
+                    <h6>
+                        <span class="fas fa-user">  {{request.user.username}}</span>
+                    </h6>
+                    <hr>
+                    <h6>
+                        <span class="fas fa-envelope">  {{request.user.email}}</span>
+                    </h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7" style="margin-top: 2%;">
+            <div class="card" style="overflow: scroll;height: 550px;border-color: white;">
+                <form method="POST" action="{% url 'new-post' %}" style="margin-top: 10px;" enctype="multipart/form-data">{% csrf_token %}
+                    <input class="form-control" type="text" name="title" placeholder="Title of the post" required><br>
+                    <textarea class="form-control" name="content" style="height: 60%;"></textarea>
+                    <br>
+                    {{form2.as_p}}
+                    <button class="btn btn-primary" style="display: block;margin: 0 auto;" type="submit">POST</button>
+                </form>
+                <div style="margin-top: 15%;">
+                    <hr>
+                </div>
+                <div class="card" style="margin-top: 1%;">
+                    <div class="card-header text-center">
+                        <h5>
+                            <strong>
+                                Your Posts
+                            </strong>
+                        </h5>
+                    </div>
+                    {% if posts %}
+                    {% for i in posts %}
+                    <div class="card-body">
+                        <div class="card" style="margin: 1%;">
+                            <div class="card-header text-center">
+                                {{i.title}}
+                            </div>
+                            <div class="card-header">
+                                {{i.text}}<br>
+                                <img src="{{i.picture.url}}" alt="" style="height: auto;width: 90%;">
+                            </div>
+                            <div class="card-footer">
+                                Posted On : {{i.date}}
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    {% endfor %}
+                    {% else %}
+                    <div class="card-body text-center">
+                        No Posts yet
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2" style="margin-top: 2%;">
+            <div class="card">
+                <img src="/static/images/dog1.jpg" class="img-thumbnail" style="height: auto;width: 100%;">
+                <a href="#">Advertisement one</a>
+                <p style="font-size: smaller;">Advertisement information text lorem ipsum</p>
+            </div>
+            <div class="card">
+                <img src="/static/images/dog1.jpg" class="img-thumbnail" style="height: auto;width: 100%;">
+                <a href="#">Advertisement two</a>
+                <p style="font-size: smaller;">Advertisement information text lorem ipsum</p>
+            </div>
+            <div class="card">
+                <img src="/static/images/dog1.jpg" class="img-thumbnail" style="height: auto;width: 100%;">
+                <a href="#">Advertisement three</a>
+                <p style="font-size: smaller;">Advertisement information text lorem ipsum</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

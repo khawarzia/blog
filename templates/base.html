@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    
+    <head>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>
+            {% block title %} Welcome {% endblock %}
+        </title>
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    </head>
+    
+    <body style="background-color:seashell;">
+
+        <nav class="navbar justify-content-between" style="height: 100%;background-color: lightblue;">
+            {% if not request.user.is_authenticated %}
+            <a class="navbar-brand" href="{% url 'home' %}"><strong>LOGO</strong></a>
+            {% else %}
+            <a class="navbar-brand">
+                <img src="{{profilephoto}}" class="rounded-circle" style="height: 50px;"> {{request.user.username}}
+            </a>
+            {% endif %}
+            {% if not request.user.is_authenticated %}
+            <form class="form-inline" method="POST" action="{% url 'login' %}">{% csrf_token %}
+                <input class="form-control mr-sm-2" name="name" type="text" placeholder="Email" aria-label="Search" required>
+                <input class="form-control mr-sm-2" name="pass" type="password" placeholder="Password" aria-label="Search" required>
+                <button class="btn btn-danger my-2 my-sm-0" type="submit">Login</button>
+            </form>
+            {% else %}
+            <form class="form-inline" action="{% url 'logout' %}">
+                <button class="btn btn-success my-2 my-sm-0" type="submit">Logout</button>
+            </form>
+            {% endif %}
+        </nav>
+        
+        {% block content %}
+        
+        <div class="container" style="margin-top: 5%;">
+            <div class="row justify-content-between">
+                <div class="col-sm-4">
+
+                </div>
+                <div class="col-sm-5">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            <strong>
+                                Register Here
+                            </strong>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{% url 'signup' %}">
+                                <div class="container">
+                                    <div class="row justify-content-around">
+                                        <div class="col-sm-6">
+                                            <input class="form-control" type="text" name="fname" placeholder="First Name" required>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input class="form-control" type="text" name="lname" placeholder="Last Name" required>
+                                        </div>
+                                    </div><br>
+                                    <div class="row justify-content-around">
+                                        <div class="col-sm-10">
+                                            <input class="form-control" type="email" name="email" placeholder="Email" required>
+                                        </div>
+                                    </div><br>
+                                    <div class="row justify-content-around">
+                                        <div class="col-sm-6">
+                                            <input class="form-control" type="password" name="pass1" placeholder="Password" required>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input class="form-control" type="password" name="pass2" placeholder="Confirm Password" required>
+                                        </div>
+                                    </div><br>
+                                    <div class="row justify-content-around">
+                                        <div class="col-sm-3">
+                                            <button class="btn btn-danger" type="submit">
+                                                Register
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% endblock %}
+
+    </body>
+
+</html>
